@@ -1,0 +1,16 @@
+﻿@model FitFriend.ViewModels.FoodTableViewModel
+    
+@foreach (var item in Model.Components)
+ {
+    <tr>
+        <td>@Html.DisplayFor(m => item.Product.Name)</td>
+        <td>@Html.DisplayFor(m => item.Product.Carbs)</td>
+        <td>@Html.DisplayFor(m => item.Product.Fats)</td>
+        <td>@Html.DisplayFor(m => item.Product.Proteins)</td>
+        <td>@Html.DisplayFor(m => item.Product.Weight)</td>
+        <td>@Html.DisplayFor(m => item.Product.Calories)</td>
+        <td>@Html.ActionLink("Delete", "MealRemove", "Food", new { id = item.Id, date = item.Date.Date.ToString("yyy-MM-dd") }, null)</td>
+     </tr>
+ }
+
+

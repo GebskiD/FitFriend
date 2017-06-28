@@ -1,0 +1,72 @@
+﻿@model FitFriend.ViewModels.ProductsListViewModel
+
+@{
+    ViewBag.Title = "AddMeal";
+}
+
+<div class="form-inline AddMeal-Search">
+    <form method="get" action="@Url.Action("AddMeal")" >
+        <input type="text" id="SearchText" name="SearchString" class="form-control" placeholder="Product name" />
+        <input type="hidden" name="data" value="@Model.date.ToString("yyyy-MM-dd")" />
+
+        <button type="submit" class="btn btn-default">Search</button>
+    </form>
+</div>
+
+
+
+<p1><h4>To add product to your Food Table ,check the "Add to meal" then<br>
+    insert quantity of product and select meal number<br><br>
+    @TempData["message"] </h4></p1>
+
+@using (Html.BeginForm("AddToFoodTable", "Food", FormMethod.Post))
+{
+    for (int i = 0; i < Model.SelectedProducts.Count(); i++)
+    {
+        <b><p1>@Model.SelectedProducts[i].Name</p1></b>
+            <p2>
+            Carbs:@Model.SelectedProducts[i].Carbs 
+            Fats:@Model.SelectedProducts[i].Fats
+            Proteins:@Model.SelectedProducts[i].Proteins
+            Weight:@Model.SelectedProducts[i].Weight
+            </p2>  
+            
+            @Html.HiddenFor(m => m.ProductIds[i], new { @Value = Model.SelectedProducts[i].Id })
+
+            @Html.HiddenFor(m => Model.date)
+
+            @Html.TextBoxFor(m => m.Quantities[i],
+             new { @class = "form-control input-sm", id = ("textBox") + i ,@readonly= "false" })
+
+            @Html.CheckBoxFor(m => m.IsChecked[i],
+            new { id = "checkBox" + i, onclick = "AssignButtonClicked(this)", data_assigned_id = "" + i })
+               <text> Add to meal</text>
+
+            <p class="big">
+                @Html.DropDownListFor(m => m.MealNumber[i], new SelectList(new[] { 1, 2, 3, 4, 5 }))
+                Select Meal Number
+            </p>
+
+            if (i == Model.SelectedProducts.Count() - 1)
+            {
+                <input type="submit" value="Submit" />
+            }
+    }
+}
+
+
+
+<script>
+
+function AssignButtonClicked(elem) {
+     $(document).ready(function () {
+        var id = $(elem).data('assigned-id');
+        var checkBoxId = '#' + 'checkBox' + id;
+        var textBoxId = '#' + 'textBox' + id
+
+         $(textBoxId).prop("readonly", !$(checkBoxId).is(':checked'));
+            });
+  }
+</script>
+
+

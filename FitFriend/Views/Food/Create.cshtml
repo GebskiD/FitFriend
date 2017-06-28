@@ -1,0 +1,34 @@
+﻿@model FitFriend.Models.Product
+
+@{
+    ViewBag.Title = "Food calculator";
+}
+
+
+<h4 class="text-success">@TempData["message"]</h4>
+
+@using (Html.BeginForm("Create","Food"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new {@class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Carbs)
+        @Html.TextBoxFor(m => m.Carbs, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Fats)
+        @Html.TextBoxFor(m => m.Fats, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proteins)
+        @Html.TextBoxFor(m => m.Proteins, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Weight)
+        @Html.TextBoxFor(m => m.Weight, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+} 
+

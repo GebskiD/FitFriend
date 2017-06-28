@@ -1,0 +1,53 @@
+﻿@model FitFriend.ViewModels.HomePageViewModel
+
+@{
+    ViewBag.Title = "GoogleChart";
+}
+
+
+
+<h2>Welcome!<br />
+     Below is a chart with daily calories for past 4 days </h2>
+
+<div id="chartdiv" style="width: 600px; height: 400px;"></div>
+
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+    google.load("visualization", "1", { packages: ["corechart"] });
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var valX = @Html.Raw(Json.Encode(Model.ValueX));
+        var valY = @Html.Raw(Json.Encode(Model.ValueY));
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Calories');
+
+        for (i = 0; i < valX.length; i++)
+        {
+            data.addRow([valX[i], valY[i]]);
+        }
+
+        var options = {
+            title: 'Daily intake of calories',
+            legend: {position: 'none'},
+
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chartdiv'));
+        chart.draw(data, options);
+
+        google.visualization.events.addListener(chart, 'select', selectHandler);
+
+        function selectHandler(e) {
+            var selection = chart.getSelection();
+            var str = data.getFormattedValue(selection[0].row,0);
+         var url = '@Url.Action("FoodTable","Food", new{ data = "__str__"} )';
+        window.location.href = url.replace('__str__', str)
+        }
+    }
+</script>

@@ -1,0 +1,82 @@
+﻿@model  FitFriend.ViewModels.FoodTableViewModel
+@{
+    ViewBag.Title = "View";
+}
+
+<h3>Food table for @Model.TableDate</h3>
+<p>Pick a date </p>
+<p> <input type="text" id="datepicker" class ="input-sm"></p>
+
+<form id="myFormID" action="@Url.Action("FoodTable","Food","")">
+    <input type="hidden" id="hiddenFieldID" name=data  />
+</form>
+
+<table style="width:auto;" class="table table-striped FoodTable" >
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Carbs</th>
+            <th>Fats</th>
+            <th>Proteins</th>
+            <th>Weight</th>
+            <th>Calories</th>
+        </tr>
+    </thead>
+    
+        @for (int i = 0; i < Model.SelectedMealNumbers.Count(); i++)
+        {
+            <tr class= "spacess">
+               <td class= "spacess"> <b>Meal number: @Model.SelectedMealNumbers[i]</b> </td>
+            </tr>
+            {
+                Html.RenderAction("TablePartial", "Food",
+                    new { model = Model, mealNumber = Model.SelectedMealNumbers[i] });
+            }
+
+            <tr >
+                <td><b>Total:</b></td>
+                <td><b>@Model.MealTotal[i].Carbs</b></td>
+                <td><b>@Model.MealTotal[i].Fats</b></td>
+                <td><b>@Model.MealTotal[i].Proteins</b></td>
+                <td></td>
+                <td><b>@Model.MealTotal[i].Calories</b></td>
+
+            </tr>
+            <tr>
+
+            </tr>            
+        }
+        
+        <tr class="success">
+            <td><b>Daily Total:</b></td>
+            <td><b>@Model.TotalSum.Carbs</b></td>
+            <td><b>@Model.TotalSum.Fats</b></td>
+            <td><b>@Model.TotalSum.Proteins</b></td>
+            <td></td>
+            <td><b>@Model.TotalSum.Calories</b></td>
+
+        </tr>
+
+
+
+</table>
+
+
+<input type="button" class="btn btn-info" value="Dodaj Produkt" onclick="location.href='@Url.Action("AddMeal", "Food",new {data = Model.TableDate })'" />
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+<script>
+  $( function() {
+      $("#datepicker").datepicker(
+          {   dateFormat: 'yy-mm-dd',
+              inline : true,
+              altField : '#hiddenFieldID',
+              onSelect : function(){
+                  $('#myFormID').submit();   
+              }
+          });
+  } );
+</script>
